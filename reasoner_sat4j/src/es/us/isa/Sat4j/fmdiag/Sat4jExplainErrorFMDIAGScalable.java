@@ -175,12 +175,11 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 		List<List<String>> splitListToSubLists = splitListToSubLists(S, div);
 
 		//// *CONQUER PHASE*////
-		List<List<String>> rest = new ArrayList<List<String>>();
 		List<List<String>> less = new ArrayList<List<String>>();
 		
 		List<String> sPrevious = new ArrayList<String>();
 		List<String> s = new ArrayList<String>();
-				
+		
 		Integer result = 0; //result = 1 (partición s preferente es el origen de diagnóstico perso s no es mínima)
 		                    //result = 2 (partición s preferente es el origen de diagnóstico y es de tamaño mínimo)
 		int j = 0; Integer posRes=-1;
@@ -192,7 +191,6 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 			
 		    s = splitListToSubLists.get(i); // S
 			
-			rest.add(getRest(s, splitListToSubLists)); // D
 			less.add(less(AC, s));
 
 			if (s.size()>0 && isConsistent(less.get(j))){
