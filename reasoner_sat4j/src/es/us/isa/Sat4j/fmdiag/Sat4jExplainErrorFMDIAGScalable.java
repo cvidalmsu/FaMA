@@ -181,8 +181,8 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 		List<String> sPrevious = new ArrayList<String>();
 		List<String> s = new ArrayList<String>();
 				
-		Integer res = 0; //res = 1 (partición s preferente es el origen de diagnóstico perso s no es mínima)
-		         //res = 2 (partición s preferente es el origen de diagnóstico y es de tamaño mínimo)
+		Integer result = 0; //result = 1 (partición s preferente es el origen de diagnóstico perso s no es mínima)
+		                    //result = 2 (partición s preferente es el origen de diagnóstico y es de tamaño mínimo)
 		int j = 0; Integer posRes=-1;
 
 		for (int i = splitListToSubLists.size() - 1; i >= 1; i--) {
@@ -197,10 +197,10 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 
 			if (s.size()>0 && isConsistent(less.get(j))){
 				if (s.size()==1){
-					res = 2;
+					result = 2;
 					outList = plus(outList, s);
 				}else{
-				    res = 1;
+				    result = 1;
 				}
 				
 				posRes=j;
@@ -210,7 +210,7 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 			j++;
 		}
 
-		if (res==0){ //Ninguna partición previa es causa de inconsistencia --> entonces la última partición es la causa!
+		if (result==0){ //Ninguna partición previa es causa de inconsistencia --> entonces la última partición es la causa!
 			posRes = j;
 			sPrevious = plus(sPrevious, s);
 			
@@ -218,15 +218,15 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 			s = splitListToSubLists.get(posRes);
 			
 			if (s.size()==1){ //Si fuera de tamaño 1
-				res = 2;
+				result = 2;
 				outList = plus(outList, s);
 			}else{
-			    res = 1;
+			    result = 1;
 			}
 		}
 
 		////2 opciones: partición mínima con diagnosis (res=2) o partición no-mínima con diagnosis (res=1)			
-		if (res==2) {
+		if (result==2) {
 		    s = sPrevious;
 		    List<String> acc = less(AC, outList); //AC without results
 		    outList = plus(outList, diag(outList, s, acc));
@@ -234,7 +234,6 @@ public class Sat4jExplainErrorFMDIAGScalable extends Sat4jQuestion implements Va
 			s = splitListToSubLists.get(splitListToSubLists.size() - 1 - posRes);
 			List<String> resS = diag(new ArrayList<String>(), s, AC);
 			
-		
 			if (sPrevious.size() > 0) //it is the 1st partition?
 				outList = plus(outList, diag(resS, sPrevious, less(AC, resS)));
 			else
